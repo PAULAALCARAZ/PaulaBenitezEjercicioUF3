@@ -187,7 +187,10 @@ public class BenitezPaulaGame {
             return true;
         }
     }
-
+    /**Este metodo actualiza la representación oculta de la película al descubrir una letra.
+     *su parametro de entrada es:
+     * @param letra la letra adivinada por el jugador
+     */
     private void actualizarPeliculaOculta(char letra) {
         StringBuilder actualizado = new StringBuilder();
         for (int i = 0; i < peliculaSeleccionada.length(); i++) {
@@ -200,7 +203,10 @@ public class BenitezPaulaGame {
         }
         peliculaOculta = actualizado.toString();
     }
-
+    /** Guarda al jugador en el ranking si su puntuación es suficiente y el nickname no es repetido.
+     * parametro de entrada:
+     * @param nickname el nombre del jugador
+     */
     private void guardarEnRanking(String nickname) {
         // Valida que el nickname no sea repetido
         while (esNicknameRepetido(nickname)) {
@@ -211,9 +217,10 @@ public class BenitezPaulaGame {
         // Si el ranking ya tiene 5 jugadores, verificar si la puntuación supera la última posición
         if (ranking.size() == 5 && puntuacion <= ranking.get(ranking.size() - 1).getPuntuacion()) {
             System.out.println("\n😞 Tu puntuación no es suficiente para entrar en el ranking.");
-            return;
+            return; // Sale del método
         }
 
+        // Añade al jugador al ranking
         ranking.add(new Jugador(nickname, puntuacion));
         Collections.sort(ranking, (j1, j2) -> j2.getPuntuacion() - j1.getPuntuacion());
         if (ranking.size() > 5) {
@@ -221,13 +228,20 @@ public class BenitezPaulaGame {
         }
     }
 
+    /**Verifica si un nickname ya existe en el ranking.
+     *
+     * @param nickname el nombre del jugador que se desea comprobar
+     * @return true si el nickname ya está en el ranking, false en caso contrario
+     */
     private boolean esNicknameRepetido(String nickname) {
+        // Recorre la lista de jugadores en el ranking
         for (Jugador jugador : ranking) {
+            // Compara el nickname ingresado con los existentes, ignorando mayúsculas y minúsculas
             if (jugador.getNickname().equalsIgnoreCase(nickname)) {
-                return true;
+                return true; // Devuelve true si encuentra un nickname repetido
             }
         }
-        return false;
+        return false; // Devuelve false si no hay coincidencias en el ranking
     }
 
 
@@ -263,15 +277,21 @@ public class BenitezPaulaGame {
             System.out.println((i + 1) + ". " + jugador.getNickname() + " - " + jugador.getPuntuacion() + " puntos");
         }
     }
-
+    /** En esta Clase gestionamos los jugadores.
+     */
     private class Jugador {
         private String nickname;
         private int puntuacion;
 
+        /** Este constructor de la clase Jugador.
+         * tiene como parametros:
+         * @param nickname  el nombre del jugador
+         * @param puntuacion la puntuación obtenida por el jugador
+         */
         public Jugador(String nickname, int puntuacion) {
             this.nickname = nickname;
             this.puntuacion = puntuacion;
-        }
+        } // Asigna la puntuación obtenida al atributo de la clase
 
         public String getNickname() {
             return nickname;

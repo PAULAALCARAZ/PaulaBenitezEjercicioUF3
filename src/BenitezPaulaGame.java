@@ -175,12 +175,29 @@ public class BenitezPaulaGame {
     }
 
     private void guardarEnRanking(String nickname) {
+        // Valida que el nickname no sea repetido
+        while (esNicknameRepetido(nickname)) {
+            System.out.println("El nickname '" + nickname + "' ya está en el ranking. Por favor, introduce otro:");
+            Scanner scanner = new Scanner(System.in);
+            nickname = scanner.nextLine().trim();
+        }
+
         ranking.add(new Jugador(nickname, puntuacion));
         Collections.sort(ranking, (j1, j2) -> j2.getPuntuacion() - j1.getPuntuacion());
         if (ranking.size() > 5) {
             ranking.remove(ranking.size() - 1);
         }
     }
+
+    private boolean esNicknameRepetido(String nickname) {
+        for (Jugador jugador : ranking) {
+            if (jugador.getNickname().equalsIgnoreCase(nickname)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private void guardarRankingEnArchivo() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("ranking.txt"))) {

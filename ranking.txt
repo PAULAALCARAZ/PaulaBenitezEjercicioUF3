@@ -1,5 +1,5 @@
 yaquetest,50
+name1,50
 test,30
 testJuego,30
 arcade,30
-yaqueWin,20

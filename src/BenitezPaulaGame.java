@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 
+/** Esta Clase gestiona el juego de adivinar la película.
+ */
 public class BenitezPaulaGame {
     private static final int MAX_INTENTOS = 10;
     private ArrayList<String> peliculas;
@@ -12,6 +14,10 @@ public class BenitezPaulaGame {
     private ArrayList<Character> letrasAdivinadas;
     private int puntuacion;
 
+    /** Este es el constructor de la clase Game.
+     * Inicializa las listas de películas y ranking,
+     * carga las películas desde un archivo.
+     */
     public BenitezPaulaGame() {
         peliculas = new ArrayList<>();
         ranking = new ArrayList<>();
@@ -19,6 +25,10 @@ public class BenitezPaulaGame {
         cargarRankingDesdeArchivo();
     }
 
+    /** Carga las películas desde el archivo "peliculas.txt".
+     * Como metodo de gestion de errores el try catch excepción,
+     * muestra una lista de películas Si no se puede leer el archivo.
+     */
     private void cargarPeliculas() {
         try (BufferedReader br = new BufferedReader(new FileReader("peliculas.txt"))) {
             String linea;
@@ -42,13 +52,18 @@ public class BenitezPaulaGame {
 
         }
     }
-
+    /** Este metodo selecciona una película al azar de la lista
+     * y genera la versión oculta con asteriscos.
+     */
     private void seleccionarPeliculaAleatoria() {
         Random random = new Random();
         peliculaSeleccionada = peliculas.get(random.nextInt(peliculas.size())).toLowerCase();
         ocultarPelicula();
     }
 
+    /** metodo que genera la representación oculta de la película seleccionada,
+     * reemplazando las letras por asteriscos mientras conserva espacios y puntuación.
+     */
     private void ocultarPelicula() {
         StringBuilder oculta = new StringBuilder();
         for (char c : peliculaSeleccionada.toCharArray()) {
@@ -61,6 +76,11 @@ public class BenitezPaulaGame {
         peliculaOculta = oculta.toString();
     }
 
+    /**
+     * Espe metodo inicia el juego con un nickname proporcionado por el usuario.
+     * su parametro de entrada.
+     * @param nickname el nombre del jugador
+     */
     public void iniciarJuego(String nickname) {
         Scanner scanner = new Scanner(System.in);
         seleccionarPeliculaAleatoria();
@@ -71,6 +91,9 @@ public class BenitezPaulaGame {
 
         System.out.println("\nLa película tiene " + peliculaSeleccionada.length() + " caracteres (incluyendo espacios y puntuación).");
 
+        /* Muestra el estado actual del juego, incluyendo la película oculta,
+         * letras incorrectas, intentos restantes y puntuación.
+         */
         while (intentosRestantes > 0 && peliculaOculta.contains("*")) {
             System.out.println("\nProgreso: " + peliculaOculta);
             System.out.println("Letras incorrectas: " + letrasIncorrectas);
@@ -84,9 +107,9 @@ public class BenitezPaulaGame {
             int opcion = -1;
             if (scanner.hasNextInt()) {
                 opcion = scanner.nextInt();
-                scanner.nextLine(); // Consumir salto de línea
+                scanner.nextLine(); // elimina salto de línea
             } else {
-                scanner.nextLine(); // Consumir texto no válido
+                scanner.nextLine(); //consume texto no válido
             }
 
             switch (opcion) {
@@ -115,7 +138,11 @@ public class BenitezPaulaGame {
         System.out.println("Tu puntuación final es: " + puntuacion);
         guardarRankingEnArchivo();
     }
-
+    /** Permite al jugador adivinar una letra.
+     * Actualiza el estado del juego según si la letra está o no en la película.
+     * parametro de entrada:
+     * @param scanner objeto Scanner para leer la entrada del usuario
+     */
     private void adivinarLetra(Scanner scanner) {
         System.out.print("Ingresa una letra: ");
         String input = scanner.nextLine().toLowerCase();

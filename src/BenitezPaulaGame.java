@@ -181,6 +181,11 @@ public class BenitezPaulaGame {
             Scanner scanner = new Scanner(System.in);
             nickname = scanner.nextLine().trim();
         }
+        // Si el ranking ya tiene 5 jugadores, verificar si la puntuación supera la última posición
+        if (ranking.size() == 5 && puntuacion <= ranking.get(ranking.size() - 1).getPuntuacion()) {
+            System.out.println("\n😞 Tu puntuación no es suficiente para entrar en el ranking.");
+            return;
+        }
 
         ranking.add(new Jugador(nickname, puntuacion));
         Collections.sort(ranking, (j1, j2) -> j2.getPuntuacion() - j1.getPuntuacion());
